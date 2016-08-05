@@ -12,6 +12,7 @@ ENV VERSION_GLPI 0.90.5
 ENV SRC_GLPI https://github.com/glpi-project/glpi/releases/download/${VERSION_GLPI}/glpi-${VERSION_GLPI}.tar.gz
 ENV TAR_GLPI glpi-${VERSION_GLPI}.tar.gz
 ENV FOLDER_GLPI glpi/
+ENV FOLDER_WEB /var/www/html/
 
 #Installation d'apache et de php5 avec extension
 RUN apt update \
@@ -28,11 +29,10 @@ php5-gd \
 wget
 
 #Téléchargement des sources de GLPI
-WORKDIR /var/www/html/
-RUN wget ${SRC_GLPI} \
-	&& tar -xf ${TAR_GLPI} \
-	&& rm -Rf ${TAR_GLPI} \
-	&& chown -R www-data:www-data ${FOLDER_GLPI}
+RUN wget -P ${FOLDER_WEB} ${SRC_GLPI} \
+	&& tar -xf ${FOLDER_WEB}${TAR_GLPI} -C ${FOLDER_WEB}\
+	&& rm -Rf ${FOLDER_WEB}${TAR_GLPI} \
+	&& chown -R www-data:www-data ${FOLDER_WEB}${FOLDER_GLPI}
 
 #Modification du fichier 
 RUN echo "<VirtualHost *:80>\n\tDocumentRoot /var/www/html/glpi\n\n\t<Directory /var/www/html/glpi>\n\t\tAllowOverride All\n\t\tOrder Allow,Deny\n\t\tAllow from all\n\t</Directory>\n\n\tErrorLog /var/log/apache2/error-glpi.log\n\tLogLevel warn\n\tCustomLog /var/log/apache2/access-glpi.log combined\n</VirtualHost>" > /etc/apache2/sites-available/000-default.conf
