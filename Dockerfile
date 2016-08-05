@@ -41,5 +41,8 @@ RUN echo "<VirtualHost *:80>\n\tDocumentRoot /var/www/html/glpi\n\n\t<Directory 
 #Activation du module rewrite d'apache
 RUN a2enmod rewrite && service apache2 restart
 
+#Exposition des ports
+EXPOSE 80 443
+
 #Lancement du service apache a l'initiamisation du conteneur
 ENTRYPOINT ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
