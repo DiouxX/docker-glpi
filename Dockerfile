@@ -8,8 +8,9 @@ MAINTAINER DiouxX "github@diouxx.be"
 #Ne pas poser de question à l'installation
 ENV DEBIAN_FRONTEND noninteractive
 
-ENV SRC_GLPI https://github.com/glpi-project/glpi/releases/download/0.90.5/glpi-0.90.5.tar.gz
-ENV TAR_GLPI glpi-0.90.5.tar.gz
+ENV VERSION_GLPI 0.90.5
+ENV SRC_GLPI https://github.com/glpi-project/glpi/releases/download/${VERSION_GLPI}/glpi-${VERSION_GLPI}.tar.gz
+ENV TAR_GLPI glpi-${VERSION_GLPI}.tar.gz
 ENV FOLDER_GLPI glpi/
 
 #Installation d'apache et de php5 avec extension
