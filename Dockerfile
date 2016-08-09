@@ -36,7 +36,6 @@ RUN wget -P ${FOLDER_WEB} ${SRC_GLPI} \
 
 #Modification du fichier 
 RUN echo "<VirtualHost *:80>\n\tDocumentRoot /var/www/html/glpi\n\n\t<Directory /var/www/html/glpi>\n\t\tAllowOverride All\n\t\tOrder Allow,Deny\n\t\tAllow from all\n\t</Directory>\n\n\tErrorLog /var/log/apache2/error-glpi.log\n\tLogLevel warn\n\tCustomLog /var/log/apache2/access-glpi.log combined\n</VirtualHost>" > /etc/apache2/sites-available/000-default.conf
-#RUN sed -i -- 's/\/var\/www\/html/\/var\/www\/html\/glpi/g' /etc/apache2/sites-available/000-default.conf
 
 #Activation du module rewrite d'apache
 RUN a2enmod rewrite && service apache2 restart
@@ -44,5 +43,8 @@ RUN a2enmod rewrite && service apache2 restart
 #Exposition des ports
 EXPOSE 80 443
 
-#Lancement du service apache a l'initiamisation du conteneur
+#Partage du volume
+VOLUME /var/www/html/glpi
+
+#Lancement du service apache a l'initialisation du conteneur
 ENTRYPOINT ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
