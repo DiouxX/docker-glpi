@@ -15,6 +15,13 @@ mysql:
  env_file:
   - ./mysql.env
 
+#GLPI Pesitance Data
+glpi-data:
+ image: busybox
+ container_name: glpi-data
+ volumes:
+ - /var/www/html/glpi:/var/www/html/glpi
+
 #GLPI Container
 glpi:
  image: diouxx/glpi
@@ -24,3 +31,5 @@ glpi:
   - "80:80"
  links:
   - mysql:mysql
+ volumes_from:
+ - glpi-data
