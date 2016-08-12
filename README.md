@@ -12,10 +12,28 @@ docker run --name glpi -p 80:80 -d diouxx/glpi
 docker run --name glpi --link yourdatabase:mysql -p 80:80 -d diouxx/glpi
 ```
 
+## Deploy GLPI with database and persitance container data (Recommended)
+
+For an usage on production environnement or daily usage, it's recommanded to use a data container for persistent data.
+
+* First, create data container
+
+```sh
+docker create --name glpi-data --volume /var/www/html/glpi:/var/www/html/glpi busybox /bin/true
+```
+
+* Then, you link your data container with GLPI container
+
+```sh
+docker run --name glpi --hostname glpi --link mysql:mysql --volumes-from glpi-data -p 80:80 -d diouxx/glpi
+```
+
+Enjoy :)
+
 ## Deploy with docker-compose
 
-To deploy with docker compose, you use <em>docker-compose.yml<em> and <em>mysql.env<em> file.
-You can modify <em>**mysql.env**<em> to personalize settings like :
+To deploy with docker compose, you use <em>docker-compose.yml</em> and <em>mysql.env</em> file.
+You can modify <em>**mysql.env**</em> to personalize settings like :
 
 * MySQL root password
 * GLPI database
@@ -27,5 +45,3 @@ To deploy, just run the following command on the same directory as files
 ```sh
 docker-compose up -d
 ```
-
-
