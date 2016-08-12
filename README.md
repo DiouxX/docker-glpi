@@ -32,8 +32,8 @@ Enjoy :)
 
 ## Deploy with docker-compose
 
-To deploy with docker compose, you use <em>docker-compose.yml</em> and <em>mysql.env</em> file.
-You can modify <em>**mysql.env**</em> to personalize settings like :
+To deploy with docker compose, you use *docker-compose.yml* and *mysql.env* file.
+You can modify **_mysql.env_** to personalize settings like :
 
 * MySQL root password
 * GLPI database
