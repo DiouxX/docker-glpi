@@ -1,5 +1,7 @@
 # Project to deploy GLPI with docker
 
+[![](https://images.microbadger.com/badges/version/diouxx/glpi.svg)](http://microbadger.com/images/diouxx/glpi "Get your own version badge on microbadger.com") [![](https://images.microbadger.com/badges/image/diouxx/glpi.svg)](http://microbadger.com/images/diouxx/glpi "Get your own image badge on microbadger.com")
+
 Install and run an GLPI instance with docker
 
 ## Deploy GLPI without database
