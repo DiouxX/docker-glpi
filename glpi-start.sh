@@ -6,6 +6,13 @@ TAR_GLPI=glpi-${VERSION_GLPI}.tgz
 FOLDER_GLPI=glpi/
 FOLDER_WEB=/var/www/html/
 
+#check if TLS_REQCERT is present
+if !(grep -q "TLS_REQCERT" /etc/ldap/ldap.conf)
+then
+	echo "TLS_REQCERT isn't present"
+        echo -e "TLS_REQCERT\tnever" >> /etc/ldap/ldap.conf
+fi
+
 #Téléchargement et extraction des sources de GLPI
 if [ "$(ls ${FOLDER_WEB}${FOLDER_GLPI})" ];
 then
