@@ -33,3 +33,4 @@ glpi:
   - mysql:mysql
  volumes_from:
  - glpi-data
+ restart: always
