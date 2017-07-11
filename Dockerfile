@@ -10,14 +10,17 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN apt update \
 && apt -y install \
 apache2 \
-php5 \
-php5-mysql \
-php5-ldap \
-php5-xmlrpc \
-php5-imap \
+php \
+php-mysql \
+php-ldap \
+php-xmlrpc \
+php-imap \
 curl \
-php5-curl \
-php5-gd \
+php-curl \
+php-gd \
+php-mbstring \
+php-xml \
+php-apcu-bc \
 wget
 
 #Copie et execution du script pour l'installation et l'initialisation de GLPI
