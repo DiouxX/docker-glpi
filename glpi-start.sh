@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION_GLPI=9.1.3
+VERSION_GLPI=9.1.4
 SRC_GLPI=https://github.com/glpi-project/glpi/releases/download/${VERSION_GLPI}/glpi-${VERSION_GLPI}.tgz
 TAR_GLPI=glpi-${VERSION_GLPI}.tgz
 FOLDER_GLPI=glpi/
