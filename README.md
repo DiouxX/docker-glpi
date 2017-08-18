@@ -37,7 +37,7 @@ Default, docker run will use the latest release of GLPI.
 For an usage on production environnement, it's recommanded to use the latest release.
 Here an example for release 9.1.6 :
 ```sh
-docker run --name glpi --hostname glpi --link mysql:mysql --volumes-from glpi-data -p 80:80 --e "VERSION_GLPI=9.1.6" -d diouxx/glpi
+docker run --name glpi --hostname glpi --link mysql:mysql --volumes-from glpi-data -p 80:80 --env "VERSION_GLPI=9.1.6" -d diouxx/glpi
 ```
 
 ## Deploy with docker-compose
