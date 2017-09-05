@@ -1,7 +1,10 @@
 #!/bin/bash
 
-VERSION_GLPI=9.1.4
-SRC_GLPI=https://github.com/glpi-project/glpi/releases/download/${VERSION_GLPI}/glpi-${VERSION_GLPI}.tgz
+#Controle du choix de version ou prise de la latest
+[[ ! "$VERSION_GLPI" ]] \
+	&& VERSION_GLPI=$(curl -s https://api.github.com/repos/glpi-project/glpi/releases/latest | grep tag_name | cut -d '"' -f 4)
+
+SRC_GLPI="https://github.com/glpi-project/glpi/releases/download/${VERSION_GLPI}/glpi-${VERSION_GLPI}.tgz"
 TAR_GLPI=glpi-${VERSION_GLPI}.tgz
 FOLDER_GLPI=glpi/
 FOLDER_WEB=/var/www/html/
