@@ -8,6 +8,7 @@ ENV DEBIAN_FRONTEND noninteractive
 
 #Installation d'apache et de php5 avec extension
 RUN apt update \
+&& apt -y upgrade \
 && apt -y install \
 apache2 \
 php \
@@ -21,8 +22,8 @@ php-gd \
 php-mbstring \
 php-xml \
 php-apcu-bc \
-wget \
-cron
+cron \
+wget
 
 #Copie et execution du script pour l'installation et l'initialisation de GLPI
 COPY glpi-start.sh /opt/
