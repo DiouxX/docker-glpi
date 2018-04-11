@@ -11,6 +11,11 @@ services:
    links:
     - mysql:mysql
    restart: always
+   volumes:
+    - "./timezone.ini:/etc/php/7.0/cli/php.ini"
+    - "./timezone.ini:/etc/php/7.0/apache2/php.ini"
+    - "/etc/timezone:/etc/timezone"
+    - "/etc/localtime:/etc/localtime"
 
   #Mysql Container
   mysql:
