@@ -86,5 +86,5 @@ From docker-compose
 Modify this settings
 ```yml
 environment:
-     TIMEZONE: Europe/Brussels
+     TIMEZONE=Europe/Brussels
 ```
