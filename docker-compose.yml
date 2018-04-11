@@ -37,4 +37,9 @@ services:
       - mysql:mysql
     volumes_from:
       - glpi-data
+    volumes:
+      - /etc/timezone:/etc/timezone
+      - /etc/localtime:/etc/localtime
+    environment:
+     TIMEZONE: Europe/Brussels
     restart: always
