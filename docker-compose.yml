@@ -27,9 +27,8 @@ services:
 
 #GLPI Container
   glpi:
-    build: ./
-    image: myglpi
-    container_name : myglpi
+    image: glpi
+    container_name : glpi
     hostname: glpi
     ports:
       - "80:80"
@@ -41,5 +40,5 @@ services:
       - /etc/timezone:/etc/timezone
       - /etc/localtime:/etc/localtime
     environment:
-     TIMEZONE: Europe/Brussels
+      - TIMEZONE=Europe/Brussels
     restart: always
