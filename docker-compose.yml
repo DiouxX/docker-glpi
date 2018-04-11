@@ -1,36 +1,40 @@
+version: "2"
+
+services:
 #Mysql Persitance Data
-mysql-data:
- image: busybox
- container_name: mysql-data
- volumes:
-  - /var/lib/mysql:/var/lib/mysql
+  mysql-data:
+    image: busybox
+    container_name: mysql-data
+    volumes:
+      - /var/lib/mysql:/var/lib/mysql
 
 #Mysql Container
-mysql:
- image: mysql
- container_name: mysql
- hostname: mysql
- volumes_from:
-  - mysql-data
- env_file:
-  - ./mysql.env
+  mysql:
+    image: mysql
+    container_name: mysql
+    hostname: mysql
+    volumes_from:
+      - mysql-data
+    env_file:
+      - ./mysql.env
 
 #GLPI Pesitance Data
-glpi-data:
- image: busybox
- container_name: glpi-data
- volumes:
- - /var/www/html/glpi:/var/www/html/glpi
+  glpi-data:
+    image: busybox
+    container_name: glpi-data
+    volumes:
+      - /var/www/html/glpi:/var/www/html/glpi
 
 #GLPI Container
-glpi:
- image: diouxx/glpi
- container_name : glpi
- hostname: glpi
- ports:
-  - "80:80"
- links:
-  - mysql:mysql
- volumes_from:
- - glpi-data
- restart: always
+  glpi:
+    build: ./
+    image: myglpi
+    container_name : myglpi
+    hostname: glpi
+    ports:
+      - "80:80"
+    links:
+      - mysql:mysql
+    volumes_from:
+      - glpi-data
+    restart: always

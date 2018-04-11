@@ -1,0 +1,26 @@
+version: "2"
+
+services:
+  #GLPI Container
+  glpi:
+   build: ./
+   image: myglpi
+   container_name : myglpi
+   ports:
+    - "9080:80"
+   links:
+    - mysql:mysql
+   restart: always
+   volumes:
+    - "/etc/timezone:/etc/timezone"
+    - "/etc/localtime:/etc/localtime"
+   environment:
+    TIMEZONE: Europe/Paris
+
+  #Mysql Container
+  mysql:
+   image: mysql
+   container_name: mysql
+   hostname: mysql
+   env_file:
+    - ./mysql.env
