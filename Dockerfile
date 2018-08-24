@@ -22,6 +22,7 @@ php-gd \
 php-mbstring \
 php-xml \
 php-apcu-bc \
+php-cas \
 cron \
 wget \
 jq
