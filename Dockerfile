@@ -23,7 +23,8 @@ php-mbstring \
 php-xml \
 php-apcu-bc \
 cron \
-wget
+wget \
+jq
 
 #Copie et execution du script pour l'installation et l'initialisation de GLPI
 COPY glpi-start.sh /opt/
