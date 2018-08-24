@@ -21,7 +21,7 @@ then
 fi
 
 #Téléchargement et extraction des sources de GLPI
-if [ -d "${FOLDER_WEB}${FOLDER_GLPI}" ];
+if [ "$(ls ${FOLDER_WEB}${FOLDER_GLPI})" ];
 then
 	echo "GLPI is already installed"
 else
