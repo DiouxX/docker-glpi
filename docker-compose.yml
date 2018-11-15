@@ -1,29 +1,15 @@
-version: "2"
+version: "3"
 
 services:
-#Mysql Persitance Data
-  mysql-data:
-    image: busybox
-    container_name: mysql-data
-    volumes:
-      - /var/lib/mysql:/var/lib/mysql
-
 #Mysql Container
   mysql:
     image: mysql:5.7.23
     container_name: mysql
     hostname: mysql
-    volumes_from:
-      - mysql-data
+    volumes:
+      - /var/lib/mysql:/var/lib/mysql
     env_file:
       - ./mysql.env
-
-#GLPI Pesitance Data
-  glpi-data:
-    image: busybox
-    container_name: glpi-data
-    volumes:
-      - /var/www/html/glpi:/var/www/html/glpi
 
 #GLPI Container
   glpi:
@@ -34,11 +20,10 @@ services:
       - "80:80"
     links:
       - mysql:mysql
-    volumes_from:
-      - glpi-data
     volumes:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
+      - /var/www/html/glpi/:/var/www/html/glpi
     environment:
       - TIMEZONE=Europe/Brussels
     restart: always
