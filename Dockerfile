@@ -25,7 +25,8 @@ php-apcu-bc \
 php-cas \
 cron \
 wget \
-jq
+jq \
+snmpd
 
 #Copie et execution du script pour l'installation et l'initialisation de GLPI
 COPY glpi-start.sh /opt/
