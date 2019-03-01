@@ -1,4 +1,4 @@
-version: "3"
+version: "3.2"
 
 services:
 #Mysql Container
@@ -10,6 +10,7 @@ services:
       - /var/lib/mysql:/var/lib/mysql
     env_file:
       - ./mysql.env
+    restart: always
 
 #GLPI Container
   glpi:
@@ -18,8 +19,6 @@ services:
     hostname: glpi
     ports:
       - "80:80"
-    links:
-      - mysql:mysql
     volumes:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
