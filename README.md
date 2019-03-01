@@ -36,16 +36,16 @@ docker run --name glpi --link yourdatabase:mysql -p 80:80 -d diouxx/glpi
 
 For an usage on production environnement or daily usage, it's recommanded to use a data container for persistent data.
 
-* First, create data container
+* First, create MySQL container with volume
 
 ```sh
-docker create --name glpi-data --volume /var/www/html/glpi:/var/www/html/glpi busybox /bin/true
+docker run --name mysql -e MYSQL_ROOT_PASSWORD=diouxx -e MYSQL_DATABASE=glpidb -e MYSQL_USER=glpi_user -e MYSQL_PASSWORD=glpi --volume /var/lib/mysql:/var/lib/mysql -d mysql:5.7.23
 ```
 
-* Then, you link your data container with GLPI container
+* Then, create GLPI container with volume and link MySQL container
 
 ```sh
-docker run --name glpi --hostname glpi --link mysql:mysql --volumes-from glpi-data -p 80:80 -d diouxx/glpi
+docker run --name glpi --link mysql:mysql --volume /var/www/html/glpi:/var/www/html/glpi -p 80:80 -d diouxx/glpi
 ```
 
 Enjoy :)
@@ -55,7 +55,7 @@ Default, docker run will use the latest release of GLPI.
 For an usage on production environnement, it's recommanded to use the latest release.
 Here an example for release 9.1.6 :
 ```sh
-docker run --name glpi --hostname glpi --link mysql:mysql --volumes-from glpi-data -p 80:80 --env "VERSION_GLPI=9.1.6" -d diouxx/glpi
+docker run --name glpi --hostname glpi --link mysql:mysql --volume /var/www/html/glpi:/var/www/html/glpi -p 80:80 --env "VERSION_GLPI=9.1.6" -d diouxx/glpi
 ```
 
 # Deploy with docker-compose
