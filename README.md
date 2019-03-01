@@ -12,6 +12,8 @@
   - [Deploy GLPI with database and persistance container data](#deploy-glpi-with-database-and-persistance-container-data)
   - [Deploy a specific release of GLPI](#deploy-a-specific-release-of-glpi)
 - [Deploy with docker-compose](#deploy-with-docker-compose)
+  - [mysql.env](#mysqlenv)
+  - [docker-compose .yml](#docker-compose-yml)
 - [Environnment variables](#environnment-variables)
   - [TIMEZONE](#timezone)
 
@@ -52,7 +54,7 @@ Enjoy :)
 
 ## Deploy a specific release of GLPI
 Default, docker run will use the latest release of GLPI.
-For an usage on production environnement, it's recommanded to use the latest release.
+For an usage on production environnement, it's recommanded to set specific release.
 Here an example for release 9.1.6 :
 ```sh
 docker run --name glpi --hostname glpi --link mysql:mysql --volume /var/www/html/glpi:/var/www/html/glpi -p 80:80 --env "VERSION_GLPI=9.1.6" -d diouxx/glpi
@@ -67,6 +69,47 @@ You can modify **_mysql.env_** to personalize settings like :
 * GLPI database
 * GLPI user database
 * GLPI user password
+
+
+## mysql.env
+```
+MYSQL_ROOT_PASSWORD=diouxx
+MYSQL_DATABASE=glpidb
+MYSQL_USER=glpi_user
+MYSQL_PASSWORD=glpi
+```
+
+## docker-compose .yml
+```yaml
+version: "3.2"
+
+services:
+#Mysql Container
+  mysql:
+    image: mysql:5.7.23
+    container_name: mysql
+    hostname: mysql
+    volumes:
+      - /var/lib/mysql:/var/lib/mysql
+    env_file:
+      - ./mysql.env
+    restart: always
+
+#GLPI Container
+  glpi:
+    image: diouxx/glpi
+    container_name : glpi
+    hostname: glpi
+    ports:
+      - "80:80"
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+      - /var/www/html/glpi/:/var/www/html/glpi
+    environment:
+      - TIMEZONE=Europe/Brussels
+    restart: always
+```
 
 To deploy, just run the following command on the same directory as files
 
