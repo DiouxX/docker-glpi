@@ -9,11 +9,11 @@
 - [Deploy with CLI](#deploy-with-cli)
   - [Deploy GLPI](#deploy-glpi)
   - [Deploy GLPI with existing database](#deploy-glpi-with-existing-database)
-  - [Deploy GLPI with database and persistance container data](#deploy-glpi-with-database-and-persistance-container-data)
+  - [Deploy GLPI with database and persistence container data](#deploy-glpi-with-database-and-persistence-container-data)
   - [Deploy a specific release of GLPI](#deploy-a-specific-release-of-glpi)
 - [Deploy with docker-compose](#deploy-with-docker-compose)
-  - [Deploy without persistance data ( for quickly test )](#deploy-without-persistance-data--for-quickly-test)
-  - [Deploy with persistance data](#deploy-with-persistance-data)
+  - [Deploy without persistence data ( for quickly test )](#deploy-without-persistence-data--for-quickly-test)
+  - [Deploy with persistence data](#deploy-with-persistence-data)
     - [mysql.env](#mysqlenv)
     - [docker-compose .yml](#docker-compose-yml)
 - [Environnment variables](#environnment-variables)
@@ -36,7 +36,7 @@ docker run --name glpi --link mysql:mysql -p 80:80 -d diouxx/glpi
 docker run --name glpi --link yourdatabase:mysql -p 80:80 -d diouxx/glpi
 ```
 
-## Deploy GLPI with database and persistance container data
+## Deploy GLPI with database and persistence container data
 
 For an usage on production environnement or daily usage, it's recommanded to use a data container for persistent data.
 
@@ -64,7 +64,7 @@ docker run --name glpi --hostname glpi --link mysql:mysql --volume /var/www/html
 
 # Deploy with docker-compose
 
-## Deploy without persistance data ( for quickly test )
+## Deploy without persistence data ( for quickly test )
 ```yaml
 version: "3.2"
 
@@ -89,7 +89,7 @@ services:
       - "80:80"
 ```
 
-## Deploy with persistance data
+## Deploy with persistence data
 
 To deploy with docker compose, you use *docker-compose.yml* and *mysql.env* file.
 You can modify **_mysql.env_** to personalize settings like :
@@ -159,7 +159,7 @@ docker run --name glpi --hostname glpi --link mysql:mysql --volumes-from glpi-da
 From docker-compose
 
 Modify this settings
-```yml
+```yaml
 environment:
      TIMEZONE=Europe/Brussels
 ```
