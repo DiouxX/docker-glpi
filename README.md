@@ -3,15 +3,17 @@
 [![](https://images.microbadger.com/badges/version/diouxx/glpi.svg)](http://microbadger.com/images/diouxx/glpi "Get your own version badge on microbadger.com") [![](https://images.microbadger.com/badges/image/diouxx/glpi.svg)](http://microbadger.com/images/diouxx/glpi "Get your own image badge on microbadger.com")
 
 # Table of Contents
-1. [Introduction](#introduction)
-2. [Deploy CLI](#deploy-with-CLI)
-    - [Deploy GLPI without database](#deploy-glpi-without-database)
-    - [Deploy GLPI with existing database](#deploy-glpi-with-existing-database)
-    - [Deploy GLPI with database and persistance container data](#deploy-glpi-with-database-and-persistance-container-data)
-    - [Deploy a specific release of GLPI](#deploy-a-specific-release-of-glpi)
-3. [Deploy docker-compose](#deploy-with-docker-compose)
-4. [Environnment variables](#environnment-variables)
-    - [Timezone](#timezone)
+- [Project to deploy GLPI with docker](#project-to-deploy-glpi-with-docker)
+- [Table of Contents](#table-of-contents)
+- [Introduction](#introduction)
+- [Deploy with CLI](#deploy-with-cli)
+  - [Deploy GLPI](#deploy-glpi)
+  - [Deploy GLPI with existing database](#deploy-glpi-with-existing-database)
+  - [Deploy GLPI with database and persistance container data](#deploy-glpi-with-database-and-persistance-container-data)
+  - [Deploy a specific release of GLPI](#deploy-a-specific-release-of-glpi)
+- [Deploy with docker-compose](#deploy-with-docker-compose)
+- [Environnment variables](#environnment-variables)
+  - [TIMEZONE](#timezone)
 
 # Introduction
 
@@ -19,9 +21,10 @@ Install and run an GLPI instance with docker.
 
 # Deploy with CLI
 
-## Deploy GLPI without database
+## Deploy GLPI 
 ```sh
-docker run --name glpi -p 80:80 -d diouxx/glpi
+docker run --name mysql -e MYSQL_ROOT_PASSWORD=diouxx -e MYSQL_DATABASE=glpidb -e MYSQL_USER=glpi_user -e MYSQL_PASSWORD=glpi -d mysql:5.7.23
+docker run --name glpi --link mysql:mysql -p 80:80 -d diouxx/glpi
 ```
 
 ## Deploy GLPI with existing database
