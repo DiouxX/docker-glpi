@@ -12,8 +12,10 @@
   - [Deploy GLPI with database and persistance container data](#deploy-glpi-with-database-and-persistance-container-data)
   - [Deploy a specific release of GLPI](#deploy-a-specific-release-of-glpi)
 - [Deploy with docker-compose](#deploy-with-docker-compose)
-  - [mysql.env](#mysqlenv)
-  - [docker-compose .yml](#docker-compose-yml)
+  - [Deploy without persistance data ( for quickly test )](#deploy-without-persistance-data--for-quickly-test)
+  - [Deploy with persistance data](#deploy-with-persistance-data)
+    - [mysql.env](#mysqlenv)
+    - [docker-compose .yml](#docker-compose-yml)
 - [Environnment variables](#environnment-variables)
   - [TIMEZONE](#timezone)
 
@@ -62,6 +64,33 @@ docker run --name glpi --hostname glpi --link mysql:mysql --volume /var/www/html
 
 # Deploy with docker-compose
 
+## Deploy without persistance data ( for quickly test )
+```yaml
+version: "3.2"
+
+services:
+#Mysql Container
+  mysql:
+    image: mysql:5.7.23
+    container_name: mysql
+    hostname: mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=glpidb
+      - MYSQL_USER=glpi_user
+      - MYSQL_PASSWORD=glpi
+
+#GLPI Container
+  glpi:
+    image: diouxx/glpi
+    container_name : glpi
+    hostname: glpi
+    ports:
+      - "80:80"
+```
+
+## Deploy with persistance data
+
 To deploy with docker compose, you use *docker-compose.yml* and *mysql.env* file.
 You can modify **_mysql.env_** to personalize settings like :
 
@@ -71,7 +100,7 @@ You can modify **_mysql.env_** to personalize settings like :
 * GLPI user password
 
 
-## mysql.env
+### mysql.env
 ```
 MYSQL_ROOT_PASSWORD=diouxx
 MYSQL_DATABASE=glpidb
@@ -79,7 +108,7 @@ MYSQL_USER=glpi_user
 MYSQL_PASSWORD=glpi
 ```
 
-## docker-compose .yml
+### docker-compose .yml
 ```yaml
 version: "3.2"
 
