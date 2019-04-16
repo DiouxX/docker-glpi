@@ -36,9 +36,9 @@ docker run --name glpi --link mysql:mysql -p 80:80 -d diouxx/glpi
 docker run --name glpi --link yourdatabase:mysql -p 80:80 -d diouxx/glpi
 ```
 
-## Deploy GLPI with database and persistence container data
+## Deploy GLPI with database and persistence data
 
-For an usage on production environnement or daily usage, it's recommanded to use a data container for persistent data.
+For an usage on production environnement or daily usage, it's recommanded to use container with volumes to persistent data.
 
 * First, create MySQL container with volume
 
