@@ -1,31 +1,31 @@
 #On choisit une debian
-FROM debian:latest
+FROM debian:10.4
 
 MAINTAINER DiouxX "github@diouxx.be"
 
 #Ne pas poser de question à l'installation
 ENV DEBIAN_FRONTEND noninteractive
 
-#Installation d'apache et de php5 avec extension
+#Installation d'apache et de php7.3 avec extension
 RUN apt update \
-&& apt -y upgrade \
-&& apt -y install \
+&& apt --yes install \
 apache2 \
-php \
-php-mysql \
-php-ldap \
-php-xmlrpc \
-php-imap \
+php7.3 \
+php7.3-mysql \
+php7.3-ldap \
+php7.3-xmlrpc \
+php7.3-imap \
 curl \
-php-curl \
-php-gd \
-php-mbstring \
-php-xml \
-php-apcu-bc \
+php7.3-curl \
+php7.3-gd \
+php7.3-mbstring \
+php7.3-xml \
+php7.3-apcu-bc \
 php-cas \
 cron \
 wget \
-jq
+jq \
+&& rm -rf /var/lib/apt/lists/*
 
 #Copie et execution du script pour l'installation et l'initialisation de GLPI
 COPY glpi-start.sh /opt/
