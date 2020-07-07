@@ -12,6 +12,7 @@ RUN apt update \
 apache2 \
 php7.3 \
 php7.3-mysql \
+php7.3-intl \
 php7.3-ldap \
 php7.3-xmlrpc \
 php7.3-imap \
