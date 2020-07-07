@@ -22,6 +22,9 @@ php7.3-mbstring \
 php7.3-xml \
 php7.3-apcu-bc \
 php-cas \
+php7.3-intl \
+php7.3-zip \
+php7.3-bz2 \
 cron \
 wget \
 ca-certificates \
