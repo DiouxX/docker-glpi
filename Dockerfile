@@ -31,6 +31,12 @@ ca-certificates \
 jq \
 && rm -rf /var/lib/apt/lists/*
 
+#Preparation des vhost apache
+RUN rm -f /etc/apache2/sites-available/000-default.conf
+COPY site.conf /etc/apache2/sites-available
+COPY site_redirect.conf /etc/apache2/sites-available
+COPY site_ssl.conf /etc/apache2/sites-available
+
 #Copie et execution du script pour l'installation et l'initialisation de GLPI
 COPY glpi-start.sh /opt/
 RUN chmod +x /opt/glpi-start.sh

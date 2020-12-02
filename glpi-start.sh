@@ -12,6 +12,7 @@ SRC_GLPI=$(curl -s https://api.github.com/repos/glpi-project/glpi/releases/tags/
 TAR_GLPI=$(basename ${SRC_GLPI})
 FOLDER_GLPI=glpi/
 FOLDER_WEB=/var/www/html/
+APACHE=/etc/apache2
 
 #check if TLS_REQCERT is present
 if !(grep -q "TLS_REQCERT" /etc/ldap/ldap.conf)
@@ -31,8 +32,23 @@ else
 	chown -R www-data:www-data ${FOLDER_WEB}${FOLDER_GLPI}
 fi
 
-#Modification du vhost par défaut
-echo -e "<VirtualHost *:80>\n\tDocumentRoot /var/www/html/glpi\n\n\t<Directory /var/www/html/glpi>\n\t\tAllowOverride All\n\t\tOrder Allow,Deny\n\t\tAllow from all\n\t</Directory>\n\n\tErrorLog /var/log/apache2/error-glpi.log\n\tLogLevel warn\n\tCustomLog /var/log/apache2/access-glpi.log combined\n</VirtualHost>" > /etc/apache2/sites-available/000-default.conf
+#Activation du vhost HTTP
+if [ "$SSL_REDIRECT" != "" ];
+then
+	sed -e "s#SSL_URL#$SSL_REDIRECT#" -i $APACHE/sites-available/site_redirect.conf
+	ln -s $APACHE/sites-available/site_redirect.conf $APACHE/sites-enabled/
+else
+	ln -s $APACHE/sites-available/site.conf $APACHE/sites-enabled/
+fi
+
+#Activation du vhost HTTPS
+if [ -e "/etc/certs/glpi.crt" ];
+then
+	ln -s $APACHE/mods-available/ssl.load $APACHE/mods-enabled/
+	ln -s $APACHE/mods-available/ssl.conf $APACHE/mods-enabled/
+	ln -s $APACHE/mods-available/socache_shmcb.load $APACHE/mods-enabled/
+	ln -s $APACHE/sites-available/site_ssl.conf $APACHE/sites-enabled/
+fi
 
 #Add scheduled task by cron and enable
 echo "*/2 * * * * www-data /usr/bin/php /var/www/html/glpi/front/cron.php &>/dev/null" >> /etc/cron.d/glpi
