@@ -19,10 +19,15 @@ services:
     hostname: glpi
     ports:
       - "80:80"
+      #- "443:443"
     volumes:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
       - /var/www/html/glpi/:/var/www/html/glpi
+      # For SSL support, needs glpi.crt and glpi.key files in 'certs' directory
+      #- ./certs:/etc/certs
     environment:
       - TIMEZONE=Europe/Brussels
+      # Support to force redirecting HTTP to HTTPS
+      #- SSL_REDIRECT=https://MY_SITE_HTTPS_URL/
     restart: always
