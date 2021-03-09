@@ -1,0 +1,21 @@
+name: Docker GLPI Build
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: docker login
+      env:
+        DOCKER_USER: ${{ secrets.DOCKER_USER }}   
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}  
+      run: |
+        docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+    - name: docker build glpi
+      run: |
+        docker build . -t aguyonnet/glpi-test:1.0.0
+    - name: docker push
+      run: |
+        docker push aguyonnet/glpi-test:1.0.0
