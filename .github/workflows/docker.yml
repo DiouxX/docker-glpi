@@ -19,4 +19,4 @@ jobs:
         docker build . -t aguyonnet/glpi:$(curl -s https://api.github.com/repos/glpi-project/glpi/releases/latest | grep tag_name | cut -d '"' -f 4) -t aguyonnet/glpi:latest
     - name: docker push
       run: |
-        docker push aguyonnet/glpi:$(curl -s https://api.github.com/repos/glpi-project/glpi/releases/latest | grep tag_name | cut -d '"' -f 4) aguyonnet/glpi:latest
+        docker push aguyonnet/glpi:$(curl -s https://api.github.com/repos/glpi-project/glpi/releases/latest | grep tag_name | cut -d '"' -f 4)
