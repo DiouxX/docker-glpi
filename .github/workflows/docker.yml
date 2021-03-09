@@ -16,7 +16,7 @@ jobs:
         docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
     - name: docker build glpi
       run: |
-        docker build . -t aguyonnet/glpi-test:$(curl -s https://api.github.com/repos/glpi-project/glpi/releases/latest | grep tag_name | cut -d '"' -f 4)
+        docker build . -t aguyonnet/glpi:$(curl -s https://api.github.com/repos/glpi-project/glpi/releases/latest | grep tag_name | cut -d '"' -f 4) -t aguyonnet/glpi:latest
     - name: docker push
       run: |
-        docker push aguyonnet/glpi-test:$(curl -s https://api.github.com/repos/glpi-project/glpi/releases/latest | grep tag_name | cut -d '"' -f 4)
+        docker push aguyonnet/glpi:$(curl -s https://api.github.com/repos/glpi-project/glpi/releases/latest | grep tag_name | cut -d '"' -f 4) aguyonnet/glpi:latest
