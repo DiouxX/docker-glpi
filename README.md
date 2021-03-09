@@ -6,7 +6,7 @@
 Install and run an GLPI instance with docker.
 
 ## Deploy a specific release of GLPI
-Edit the glpi-install.sh specify a version in the VERSION_GLPI var
+Edit the glpi-install.sh specify a version in the VERSION_GLPI var, then launch a build
 
 # Deploy with docker-compose
 
