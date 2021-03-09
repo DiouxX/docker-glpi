@@ -20,15 +20,10 @@ then
 fi
 
 #Téléchargement et extraction des sources de GLPI
-if [ "$(ls ${FOLDER_WEB}${FOLDER_GLPI})" ];
-then
-	echo "GLPI is already installed"
-else
-	wget -P ${FOLDER_WEB} ${SRC_GLPI}
-	tar -xzf ${FOLDER_WEB}${TAR_GLPI} -C ${FOLDER_WEB}
-	rm -Rf ${FOLDER_WEB}${TAR_GLPI}
-	chown -R www-data:www-data ${FOLDER_WEB}${FOLDER_GLPI}
-fi
+wget -P ${FOLDER_WEB} ${SRC_GLPI}
+tar -xzf ${FOLDER_WEB}${TAR_GLPI} -C ${FOLDER_WEB}
+rm -Rf ${FOLDER_WEB}${TAR_GLPI}
+chown -R www-data:www-data ${FOLDER_WEB}${FOLDER_GLPI}
 
 #Modification du vhost par défaut
 echo -e "<VirtualHost *:80>\n\tDocumentRoot /var/www/html/glpi\n\n\t<Directory /var/www/html/glpi>\n\t\tAllowOverride All\n\t\tOrder Allow,Deny\n\t\tAllow from all\n\t</Directory>\n\n\tErrorLog /var/log/apache2/error-glpi.log\n\tLogLevel warn\n\tCustomLog /var/log/apache2/access-glpi.log combined\n</VirtualHost>" > /etc/apache2/sites-available/000-default.conf
