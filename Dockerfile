@@ -11,6 +11,7 @@ RUN apt update \
 && apt install --yes --no-install-recommends \
 apt-utils \
 apache2 \
+apache2-utils \
 php7.3 \
 php7.3-mysql \
 php7.3-ldap \
