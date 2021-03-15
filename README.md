@@ -48,10 +48,10 @@ You can modify **_mariadb.env_** to personalize settings like :
 
 ### mariadb.env
 ```
-mariadb_ROOT_PASSWORD=aguyonnet
-mariadb_DATABASE=glpidb
-mariadb_USER=glpi_user
-mariadb_PASSWORD=glpi
+MYSQL_ROOT_PASSWORD=aguyonnet
+MYSQL_DATABASE=glpidb
+MYSQL_USER=glpi_user
+MYSQL_PASSWORD=glpi
 ```
 
 ### docker-compose .yml
