@@ -12,7 +12,7 @@ Edit the glpi-install.sh specify a version in the VERSION_GLPI var, then launch 
 
 ## Deploy without persistence data ( for quickly test )
 ```yaml
-version: "3.2"
+version: "3.5"
 
 services:
 #mariadb Container
@@ -56,7 +56,7 @@ MYSQL_PASSWORD=glpi
 
 ### docker-compose .yml
 ```yaml
-version: "3.2"
+version: "3.5"
 
 services:
 #mariadb Container
