@@ -65,7 +65,7 @@ services:
     container_name: mariadb-glpi
     hostname: mariadb
     volumes:
-      - /var/lib/mysql:/var/lib/mysql
+      - glpi-db:/var/lib/mysql
     env_file:
       - ./mariadb.env
     restart: always
@@ -80,10 +80,13 @@ services:
     volumes:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
-      - /var/www/html/glpi/:/var/www/html/glpi
+      - glpi-data:/var/www/html/glpi
     environment:
       - TIMEZONE=Europe/Paris
     restart: always
+volumes:
+  glpi-db:
+  glpi-data:
 ```
 
 To deploy, just run the following command on the same directory as files
