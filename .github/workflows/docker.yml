@@ -1,0 +1,23 @@
+name: Docker GLPI Build
+
+#on: [push]
+on: [workflow_dispatch]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: docker login
+      env:
+        DOCKER_USER: ${{ secrets.DOCKER_USER }}   
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}  
+      run: |
+        docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+    - name: docker build glpi
+      run: |
+        docker build . -t aguyonnet/glpi:$(curl -s https://api.github.com/repos/glpi-project/glpi/releases/latest | grep tag_name | cut -d '"' -f 4) -t aguyonnet/glpi:latest
+    - name: docker push
+      run: |
+        docker push aguyonnet/glpi:$(curl -s https://api.github.com/repos/glpi-project/glpi/releases/latest | grep tag_name | cut -d '"' -f 4)
+        docker push aguyonnet/glpi:latest

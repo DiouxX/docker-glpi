@@ -1,7 +1,7 @@
 #On choisit une debian
-FROM debian:10.4
+FROM debian:latest
 
-MAINTAINER DiouxX "github@diouxx.be"
+MAINTAINER Aguyonnet "f.guyonantoine@gmail.com"
 
 #Ne pas poser de question à l'installation
 ENV DEBIAN_FRONTEND noninteractive
@@ -9,7 +9,9 @@ ENV DEBIAN_FRONTEND noninteractive
 #Installation d'apache et de php7.3 avec extension
 RUN apt update \
 && apt install --yes --no-install-recommends \
+apt-utils \
 apache2 \
+apache2-utils \
 php7.3 \
 php7.3-mysql \
 php7.3-ldap \
@@ -32,9 +34,10 @@ jq \
 && rm -rf /var/lib/apt/lists/*
 
 #Copie et execution du script pour l'installation et l'initialisation de GLPI
-COPY glpi-start.sh /opt/
-RUN chmod +x /opt/glpi-start.sh
+COPY glpi-start.sh glpi-install.sh /opt/
+RUN chmod +x /opt/glpi-start.sh /opt/glpi-install.sh
+RUN bash /opt/glpi-install.sh
 ENTRYPOINT ["/opt/glpi-start.sh"]
 
 #Exposition des ports
-EXPOSE 80 443
+EXPOSE 80
