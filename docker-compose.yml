@@ -3,7 +3,7 @@ version: "3.2"
 services:
 #Mysql Container
   mysql:
-    image: mysql:5.7.23
+    image: mysql:5.7.34
     container_name: mysql
     hostname: mysql
     volumes:
