@@ -1,5 +1,5 @@
 #On choisit une debian
-FROM debian:latest
+FROM debian:10
 
 MAINTAINER Aguyonnet "f.guyonantoine@gmail.com"
 
