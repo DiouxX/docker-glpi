@@ -1,30 +1,30 @@
 #On choisit une debian
-FROM debian:10.4
+FROM debian:11.1
 
 MAINTAINER DiouxX "github@diouxx.be"
 
 #Ne pas poser de question à l'installation
 ENV DEBIAN_FRONTEND noninteractive
 
-#Installation d'apache et de php7.3 avec extension
+#Installation d'apache et de php7.4 avec extension
 RUN apt update \
 && apt install --yes --no-install-recommends \
 apache2 \
-php7.3 \
-php7.3-mysql \
-php7.3-ldap \
-php7.3-xmlrpc \
-php7.3-imap \
+php7.4 \
+php7.4-mysql \
+php7.4-ldap \
+php7.4-xmlrpc \
+php7.4-imap \
 curl \
-php7.3-curl \
-php7.3-gd \
-php7.3-mbstring \
-php7.3-xml \
-php7.3-apcu-bc \
+php7.4-curl \
+php7.4-gd \
+php7.4-mbstring \
+php7.4-xml \
+php7.4-apcu-bc \
 php-cas \
-php7.3-intl \
-php7.3-zip \
-php7.3-bz2 \
+php7.4-intl \
+php7.4-zip \
+php7.4-bz2 \
 cron \
 wget \
 ca-certificates \
