@@ -9,12 +9,12 @@
 - [Deploy with CLI](#deploy-with-cli)
   - [Deploy GLPI](#deploy-glpi)
   - [Deploy GLPI with existing database](#deploy-glpi-with-existing-database)
-  - [Deploy GLPI with database and persistence container data](#deploy-glpi-with-database-and-persistence-container-data)
+  - [Deploy GLPI with database and persistence data](#deploy-glpi-with-database-and-persistence-data)
   - [Deploy a specific release of GLPI](#deploy-a-specific-release-of-glpi)
 - [Deploy with docker-compose](#deploy-with-docker-compose)
-  - [Deploy without persistence data ( for quickly test )](#deploy-without-persistence-data--for-quickly-test)
+  - [Deploy without persistence data ( for quickly test )](#deploy-without-persistence-data--for-quickly-test-)
   - [Deploy with persistence data](#deploy-with-persistence-data)
-    - [mysql.env](#mysqlenv)
+    - [mariadb.env](#mariadbenv)
     - [docker-compose .yml](#docker-compose-yml)
 - [Environnment variables](#environnment-variables)
   - [TIMEZONE](#timezone)
@@ -27,29 +27,29 @@ Install and run an GLPI instance with docker.
 
 ## Deploy GLPI 
 ```sh
-docker run --name mysql -e MYSQL_ROOT_PASSWORD=diouxx -e MYSQL_DATABASE=glpidb -e MYSQL_USER=glpi_user -e MYSQL_PASSWORD=glpi -d mysql:5.7.23
-docker run --name glpi --link mysql:mysql -p 80:80 -d diouxx/glpi
+docker run --name mariadb -e MARIADB_ROOT_PASSWORD=diouxx -e MARIADB_DATABASE=glpidb -e MARIADB_USER=glpi_user -e MARIADB_PASSWORD=glpi -d mariadb:10.7
+docker run --name glpi --link mariadb:mariadb -p 80:80 -d diouxx/glpi
 ```
 
 ## Deploy GLPI with existing database
 ```sh
-docker run --name glpi --link yourdatabase:mysql -p 80:80 -d diouxx/glpi
+docker run --name glpi --link yourdatabase:mariadb -p 80:80 -d diouxx/glpi
 ```
 
 ## Deploy GLPI with database and persistence data
 
 For an usage on production environnement or daily usage, it's recommanded to use container with volumes to persistent data.
 
-* First, create MySQL container with volume
+* First, create MariaDB container with volume
 
 ```sh
-docker run --name mysql -e MYSQL_ROOT_PASSWORD=diouxx -e MYSQL_DATABASE=glpidb -e MYSQL_USER=glpi_user -e MYSQL_PASSWORD=glpi --volume /var/lib/mysql:/var/lib/mysql -d mysql:5.7.23
+docker run --name mariadb -e MARIADB_ROOT_PASSWORD=diouxx -e MARIADB_DATABASE=glpidb -e MARIADB_USER=glpi_user -e MARIADB_PASSWORD=glpi --volume /var/lib/mysql:/var/lib/mysql -d mariadb:10.7
 ```
 
-* Then, create GLPI container with volume and link MySQL container
+* Then, create GLPI container with volume and link MariaDB container
 
 ```sh
-docker run --name glpi --link mysql:mysql --volume /var/www/html/glpi:/var/www/html/glpi -p 80:80 -d diouxx/glpi
+docker run --name glpi --link mariadb:mariadb --volume /var/www/html/glpi:/var/www/html/glpi -p 80:80 -d diouxx/glpi
 ```
 
 Enjoy :)
@@ -59,26 +59,26 @@ Default, docker run will use the latest release of GLPI.
 For an usage on production environnement, it's recommanded to set specific release.
 Here an example for release 9.1.6 :
 ```sh
-docker run --name glpi --hostname glpi --link mysql:mysql --volume /var/www/html/glpi:/var/www/html/glpi -p 80:80 --env "VERSION_GLPI=9.1.6" -d diouxx/glpi
+docker run --name glpi --hostname glpi --link mariadb:mariadb --volume /var/www/html/glpi:/var/www/html/glpi -p 80:80 --env "VERSION_GLPI=9.1.6" -d diouxx/glpi
 ```
 
 # Deploy with docker-compose
 
 ## Deploy without persistence data ( for quickly test )
 ```yaml
-version: "3.2"
+version: "3.8"
 
 services:
-#Mysql Container
-  mysql:
-    image: mysql:5.7.23
-    container_name: mysql
-    hostname: mysql
+#MariaDB Container
+  mariadb:
+    image: mariadb:10.7
+    container_name: mariadb
+    hostname: mariadb
     environment:
-      - MYSQL_ROOT_PASSWORD=password
-      - MYSQL_DATABASE=glpidb
-      - MYSQL_USER=glpi_user
-      - MYSQL_PASSWORD=glpi
+      - MARIADB_ROOT_PASSWORD=password
+      - MARIADB_DATABASE=glpidb
+      - MARIADB_USER=glpi_user
+      - MARIADB_PASSWORD=glpi
 
 #GLPI Container
   glpi:
@@ -91,21 +91,21 @@ services:
 
 ## Deploy with persistence data
 
-To deploy with docker compose, you use *docker-compose.yml* and *mysql.env* file.
-You can modify **_mysql.env_** to personalize settings like :
+To deploy with docker compose, you use *docker-compose.yml* and *mariadb.env* file.
+You can modify **_mariadb.env_** to personalize settings like :
 
-* MySQL root password
+* MariaDB root password
 * GLPI database
 * GLPI user database
 * GLPI user password
 
 
-### mysql.env
+### mariadb.env
 ```
-MYSQL_ROOT_PASSWORD=diouxx
-MYSQL_DATABASE=glpidb
-MYSQL_USER=glpi_user
-MYSQL_PASSWORD=glpi
+MARIADB_ROOT_PASSWORD=diouxx
+MARIADB_DATABASE=glpidb
+MARIADB_USER=glpi_user
+MARIADB_PASSWORD=glpi
 ```
 
 ### docker-compose .yml
@@ -113,15 +113,15 @@ MYSQL_PASSWORD=glpi
 version: "3.2"
 
 services:
-#Mysql Container
-  mysql:
-    image: mysql:5.7.23
-    container_name: mysql
-    hostname: mysql
+#MariaDB Container
+  mariadb:
+    image: mariadb:10.7
+    container_name: mariadb
+    hostname: mariadb
     volumes:
       - /var/lib/mysql:/var/lib/mysql
     env_file:
-      - ./mysql.env
+      - ./mariadb.env
     restart: always
 
 #GLPI Container
@@ -153,7 +153,7 @@ If you need to set timezone for Apache and PHP
 
 From commande line
 ```sh
-docker run --name glpi --hostname glpi --link mysql:mysql --volumes-from glpi-data -p 80:80 --env "TIMEZONE=Europe/Brussels" -d diouxx/glpi
+docker run --name glpi --hostname glpi --link mariadb:mariadb --volumes-from glpi-data -p 80:80 --env "TIMEZONE=Europe/Brussels" -d diouxx/glpi
 ```
 
 From docker-compose
