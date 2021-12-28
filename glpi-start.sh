@@ -16,12 +16,6 @@ FOLDER_GLPI=glpi/
 FOLDER_WEB=/var/www/html/
 
 #check if TLS_REQCERT is present
-if [ ! -f /etc/ldap/ldapd.conf ]
-then
-	echo "The file /etc/ldap/ldap.conf does not exit"
-	apt update && apt install -y libldap-2.4-2 libldap-common libsasl2-2 libsasl2-modules libsasl2-modules-db
-fi
-
 if !(grep -q "TLS_REQCERT" /etc/ldap/ldap.conf)
 then
 	echo "TLS_REQCERT isn't present"
