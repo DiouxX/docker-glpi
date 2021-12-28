@@ -13,6 +13,7 @@
   - [Deploy a specific release of GLPI](#deploy-a-specific-release-of-glpi)
 - [Deploy with docker-compose](#deploy-with-docker-compose)
   - [Deploy without persistence data ( for quickly test )](#deploy-without-persistence-data--for-quickly-test-)
+  - [Deploy a specific release](#deploy-a-specific-release)
   - [Deploy with persistence data](#deploy-with-persistence-data)
     - [mariadb.env](#mariadbenv)
     - [docker-compose .yml](#docker-compose-yml)
@@ -85,6 +86,34 @@ services:
     image: diouxx/glpi
     container_name : glpi
     hostname: glpi
+    ports:
+      - "80:80"
+```
+
+## Deploy a specific release
+
+```yaml
+version: "3.8"
+
+services:
+#MariaDB Container
+  mariadb:
+    image: mariadb:10.7
+    container_name: mariadb
+    hostname: mariadb
+    environment:
+      - MARIADB_ROOT_PASSWORD=password
+      - MARIADB_DATABASE=glpidb
+      - MARIADB_USER=glpi_user
+      - MARIADB_PASSWORD=glpi
+
+#GLPI Container
+  glpi:
+    image: diouxx/glpi
+    container_name : glpi
+    hostname: glpi
+    environment:
+      - VERSION_GLPI=9.5.6
     ports:
       - "80:80"
 ```
