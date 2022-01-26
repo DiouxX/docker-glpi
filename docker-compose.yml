@@ -9,7 +9,7 @@ services:
     volumes:
       - /var/lib/mysql:/var/lib/mysql
     env_file:
-      - ./ariadb.env
+      - ./mariadb.env
     restart: always
 
 #GLPI Container
