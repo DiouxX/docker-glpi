@@ -6,6 +6,7 @@
 - [Project to deploy GLPI with docker](#project-to-deploy-glpi-with-docker)
 - [Table of Contents](#table-of-contents)
 - [Introduction](#introduction)
+  - [Default accounts](#default-accounts)
 - [Deploy with CLI](#deploy-with-cli)
   - [Deploy GLPI](#deploy-glpi)
   - [Deploy GLPI with existing database](#deploy-glpi-with-existing-database)
@@ -22,7 +23,18 @@
 
 # Introduction
 
-Install and run an GLPI instance with docker.
+Install and run an GLPI instance with docker
+
+## Default accounts
+
+More info in the 📄[Docs](https://glpi-install.readthedocs.io/en/latest/install/wizard.html#end-of-installation)
+
+| Login/Password     	| Role              	|
+|--------------------	|-------------------	|
+| glpi/glpi          	| admin account     	|
+| tech/tech          	| technical account 	|
+| normal/normal      	| "normal" account  	|
+| post-only/postonly 	| post-only account 	|
 
 # Deploy with CLI
 
