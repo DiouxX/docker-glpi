@@ -22,9 +22,9 @@ then
     echo -e "TLS_REQCERT\tnever" >> /etc/ldap/ldap.conf
 fi
 
-# Check if GLPI, but not only the plugins folder is present. This way it is possible to install plugins
-# before GLPI is started which makes it easier to build custom Docker images based on diouxx/glpi.
-if [ -d "${FOLDER_WEB}${FOLDER_GLPI}" ] && [ "$(ls ${FOLDER_WEB}${FOLDER_GLPI})" != "plugins" ];
+# Check if GLPI + the index.php are installed. This way it is possible to install plugins before
+# GLPI is started which makes it easier to build custom Docker images based on diouxx/glpi.
+if [ -d "${FOLDER_WEB}${FOLDER_GLPI}" ] && [ -f "${FOLDER_WEB}${FOLDER_GLPI}index.php" ];
 then
 	echo "GLPI is already installed"
 else
