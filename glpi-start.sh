@@ -28,7 +28,6 @@ if [ -d "${FOLDER_WEB}${FOLDER_GLPI}" ] && [ -f "${FOLDER_WEB}${FOLDER_GLPI}inde
 then
 	echo "GLPI is already installed"
 else
-	#Téléchargement et extraction des sources de GLPI
 	wget -P ${FOLDER_WEB} ${SRC_GLPI}
 	tar -xzf ${FOLDER_WEB}${TAR_GLPI} -C ${FOLDER_WEB}
 	rm -Rf ${FOLDER_WEB}${TAR_GLPI}
