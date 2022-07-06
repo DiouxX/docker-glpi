@@ -1,5 +1,5 @@
 #On choisit une debian
-FROM debian:11.1
+FROM debian:11.3
 
 LABEL org.opencontainers.image.authors="github@diouxx.be"
 
@@ -7,25 +7,30 @@ LABEL org.opencontainers.image.authors="github@diouxx.be"
 #Ne pas poser de question à l'installation
 ENV DEBIAN_FRONTEND noninteractive
 
-#Installation d'apache et de php7.4 avec extension
-RUN apt update \
-&& apt install --yes --no-install-recommends \
+#Installation dépots php 8.1
+RUN apt-get update \ 
+&& apt-get -y install apt-transport-https lsb-release ca-certificates curl \
+&& curl -sSLo /usr/share/keyrings/deb.sury.org-php.gpg https://packages.sury.org/php/apt.gpg \ 
+&& sh -c 'echo "deb [signed-by=/usr/share/keyrings/deb.sury.org-php.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list' \
+&& apt-get update
+
+#Installation d'apache et de php 8.1 avec extension
+RUN apt install --yes --no-install-recommends \
 apache2 \
-php7.4 \
-php7.4-mysql \
-php7.4-ldap \
-php7.4-xmlrpc \
-php7.4-imap \
-curl \
-php7.4-curl \
-php7.4-gd \
-php7.4-mbstring \
-php7.4-xml \
-php7.4-apcu-bc \
+php8.1 \
+php8.1-mysql \
+php7.1-ldap \
+php8.1-xmlrpc \
+php8.1-imap \
+php8.1-curl \
+php7.1-gd \
+php8.1-mbstring \
+php8.1-xml \
+php8.1-apcu-bc \
 php-cas \
-php7.4-intl \
-php7.4-zip \
-php7.4-bz2 \
+php8.1-intl \
+php8.1-zip \
+php8.1-bz2 \
 cron \
 wget \
 ca-certificates \
