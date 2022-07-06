@@ -8,25 +8,24 @@ LABEL org.opencontainers.image.authors="github@diouxx.be"
 ENV DEBIAN_FRONTEND noninteractive
 
 #Installation dépots php 8.1
-RUN apt-get update \ 
-&& apt-get -y install apt-transport-https lsb-release ca-certificates curl \
+RUN apt update \ 
+&& apt --yes install apt-transport-https lsb-release ca-certificates curl \
 && curl -sSLo /usr/share/keyrings/deb.sury.org-php.gpg https://packages.sury.org/php/apt.gpg \ 
 && sh -c 'echo "deb [signed-by=/usr/share/keyrings/deb.sury.org-php.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list' \
-&& apt-get update
+&& apt update
 
 #Installation d'apache et de php 8.1 avec extension
 RUN apt install --yes --no-install-recommends \
 apache2 \
 php8.1 \
 php8.1-mysql \
-php7.1-ldap \
+php8.1-ldap \
 php8.1-xmlrpc \
 php8.1-imap \
 php8.1-curl \
-php7.1-gd \
+php8.1-gd \
 php8.1-mbstring \
 php8.1-xml \
-php8.1-apcu-bc \
 php-cas \
 php8.1-intl \
 php8.1-zip \
