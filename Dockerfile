@@ -26,6 +26,7 @@ php-cas \
 php7.4-intl \
 php7.4-zip \
 php7.4-bz2 \
+php7.4-redis \
 cron \
 wget \
 ca-certificates \
