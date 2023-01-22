@@ -1,5 +1,5 @@
 #On choisit une debian
-FROM debian:11.1
+FROM debian:11.6
 
 LABEL org.opencontainers.image.authors="github@diouxx.be"
 
