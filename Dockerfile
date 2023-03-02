@@ -7,6 +7,17 @@ LABEL org.opencontainers.image.authors="github@diouxx.be"
 #Ne pas poser de question à l'installation
 ENV DEBIAN_FRONTEND noninteractive
 
+#DB and Cache settings
+ENV DB_HOST=mariadb \
+    DB_PORT=3306 \
+    DB_NAME=glpidb \
+    DB_USER=glpi_user \
+    DB_PASSWORD=glpi \
+    REDIS_HOST=${REDIS_HOST} \
+    REDIS_PORT=${REDIS_PORT} \
+    REDIS_PASS=${REDIS_PASS} \
+    REDIS_DB=${REDIS_DB}
+
 #Installation d'apache et de php7.4 avec extension
 RUN apt update \
 && apt install --yes --no-install-recommends \
