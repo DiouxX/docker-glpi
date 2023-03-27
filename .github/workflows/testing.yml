@@ -1,7 +1,8 @@
 name: Mise à jour automatique du programme
-on:
-  schedule:
-    - cron: '0 * * * *' # Exécute la pipeline toutes les heures
+# on:
+#   schedule:
+#     - cron: '0 * * * *' # Exécute la pipeline toutes les heures
+on: [workflow_dispatch]
 jobs:
   build:
     runs-on: ubuntu-latest
