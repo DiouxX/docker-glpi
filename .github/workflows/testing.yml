@@ -1,26 +1,34 @@
 name: Mise à jour automatique du programme
-# on:
-#   schedule:
-#     - cron: '0 * * * *' # Exécute la pipeline toutes les heures
-on: [workflow_dispatch]
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 * * * *' # Exécute la pipeline toutes les heures
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: Extraire la valeur HTML spécifique
-      run: |
-        wget -O - https://glpi-project.org/fr/telecharger-glpi/ | grep "<p style=\"text-align: center;\">GLPI VERSION" | sed -n 's/.*GLPI VERSION \([0-9.]*\).*/\1/p' > current_version.txt
-    - name: Comparer les versions
-      run: |
-        if ! diff current_version.txt <(echo ${{ secrets.PROGRAM_VERSION }}); then
-          echo "Une nouvelle version du programme est disponible."
-          export PROGRAM_VERSION=$(cat current_version.txt)
-          # Continuer le processus de mise à jour ici
-          
-          # Envoyer une demande PATCH à l'API GitHub pour mettre à jour la variable secrète
-          echo -n $PROGRAM_VERSION | base64 --wrap=0 > program_version_base64.txt
-          curl -X PATCH -H "Authorization: Bearer ${{ secrets.PERSONAL_ACCESS_TOKEN }}" -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/aguyonp/docker-glpi-automated/actions/secrets/PROGRAM_VERSION -d '{"encrypted_value":"'"$(cat program_version_base64.txt)"'"}'
-        else
-          echo "Le programme est à jour."
-          exit 1 # Arrête la pipeline avec un code d'erreur
-        fi
+      - name: Extraire la valeur HTML spécifique
+        run: |
+          wget -O - https://glpi-project.org/fr/telecharger-glpi/ | grep "<p style=\"text-align: center;\">GLPI VERSION" | sed -n 's/.*GLPI VERSION \([0-9.]*\).*/\1/p' > current_version.txt
+      - name: Comparer les versions
+        continue-on-error: true
+        run: |
+          if ! diff current_version.txt <(echo ${{ secrets.PROGRAM_VERSION }}); then
+            echo "Une nouvelle version du programme est disponible."
+            export PROGRAM_VERSION=$(cat current_version.txt)
+            # Continuer le processus de mise à jour ici
+
+            # Créer un fichier temporaire pour stocker la valeur encodée en base64 de la nouvelle version
+            echo -n $PROGRAM_VERSION | base64 --wrap=0 > program_version_base64.txt
+
+            # Mettre à jour la variable secrète à l'aide de l'API GitHub
+            if [ -s program_version_base64.txt ]; then
+              curl -X PATCH -H "Authorization: Bearer ${{ secrets.PERSONAL_ACCESS_TOKEN }}" -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/aguyonp/docker-glpi-automated/actions/secrets/PROGRAM_VERSION -d '{"encrypted_value":"'"$(cat program_version_base64.txt)"'"}'
+              echo "La variable secrète PROGRAM_VERSION a été mise à jour."
+            else
+              echo "La valeur encodée en base64 de la nouvelle version est vide ou le fichier program_version_base64.txt n'existe pas."
+            fi
+          else
+            echo "Le programme est à jour."
+            exit 1 # Arrête la pipeline avec un code d'erreur
+          fi
