@@ -16,17 +16,11 @@ jobs:
           echo "Une nouvelle version du programme est disponible."
           export PROGRAM_VERSION=$(cat current_version.txt)
           # Continuer le processus de mise à jour ici
+          
+          # Envoyer une demande PATCH à l'API GitHub pour mettre à jour la variable secrète
+          echo -n $PROGRAM_VERSION | base64 --wrap=0 > program_version_base64.txt
+          curl -X PATCH -H "Authorization: Bearer ${{ secrets.PERSONAL_ACCESS_TOKEN }}" -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/<OWNER>/<REPO>/actions/secrets/PROGRAM_VERSION -d '{"encrypted_value":"'"$(cat program_version_base64.txt)"'"}'
         else
           echo "Le programme est à jour."
           exit 1 # Arrête la pipeline avec un code d'erreur
         fi
-
-    - name: Mettre à jour la variable secrète
-      run: |
-        echo ${{ secrets.PERSONAL_ACCESS_TOKEN }} > access_token.txt
-        curl -X PATCH -H "Authorization: Bearer $(cat access_token.txt)" -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/aguyonp/docker-glpi-automated/actions/secrets/PROGRAM_VERSION -d '{"encrypted_value": "'"$(echo -n "${PROGRAM_VERSION}" | base64)"'"}'
-      env:
-        PROGRAM_VERSION: ${{ env.PROGRAM_VERSION }}
-
-    - name: Supprimer le jeton d'accès personnel
-      run: rm access_token.txt
