@@ -4,7 +4,7 @@ on:
   schedule:
     - cron: '0 * * * *'
   workflow_dispatch:
-
+  
 jobs:
   check_version:
     runs-on: ubuntu-latest
@@ -23,6 +23,13 @@ jobs:
         python -m pip install --upgrade pip
         pip install requests beautifulsoup4
 
+    - name: Download last GLPI version artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: last_glpi_version
+        path: ./last_glpi_version
+      continue-on-error: true
+
     - name: Check GLPI version
       run: python check_glpi_version.py
 
@@ -36,3 +43,10 @@ jobs:
       run: |
         echo "Build process starts for new GLPI version ${{ env.NEW_GLPI_VERSION }}"
         # Ajoutez ici les étapes pour lancer le build avec la nouvelle version
+
+    - name: Upload new last GLPI version artifact
+      if: ${{ success() }}
+      uses: actions/upload-artifact@v2
+      with:
+        name: last_glpi_version
+        path: ./last_glpi_version/last_glpi_version.txt
