@@ -1,0 +1,22 @@
+name: Mise à jour automatique du programme
+on:
+  schedule:
+    - cron: '0 * * * *' # Exécute la pipeline toutes les heures
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Extraire la valeur HTML spécifique
+      run: |
+        wget -O - https://glpi-project.org/fr/telecharger-glpi/ | grep "<p style=\"text-align: center;\">GLPI VERSION" | sed -n 's/.*GLPI VERSION \([0-9.]*\).*/\1/p' > current_version.txt
+    - name: Comparer les versions
+      run: |
+        if ! diff current_version.txt <(echo ${{ secrets.PROGRAM_VERSION }}); then
+          echo "Une nouvelle version du programme est disponible."
+          export NEW_VERSION=$(cat current_version.txt)
+          echo "::set-secrets name=PROGRAM_VERSION::${NEW_VERSION}"
+          # Continuer le processus de mise à jour ici
+        else
+          echo "Le programme est à jour."
+          exit 1 # Arrête la pipeline avec un code d'erreur
+        fi
