@@ -27,7 +27,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: last_glpi_version
-        path: ./last_glpi_version
+        path: ./last_glpi_version.txt
       continue-on-error: true
 
     - name: Check GLPI version
@@ -49,4 +49,4 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: last_glpi_version
-        path: ./last_glpi_version/last_glpi_version.txt
+        path: ./last_glpi_version.txt
