@@ -1,8 +1,10 @@
 name: Mise à jour automatique du programme
+
 on:
-  workflow_dispatch:
   schedule:
     - cron: '0 * * * *' # Exécute la pipeline toutes les heures
+  workflow_dispatch:
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -10,25 +12,28 @@ jobs:
       - name: Extraire la valeur HTML spécifique
         run: |
           wget -O - https://glpi-project.org/fr/telecharger-glpi/ | grep "<p style=\"text-align: center;\">GLPI VERSION" | sed -n 's/.*GLPI VERSION \([0-9.]*\).*/\1/p' > current_version.txt
-      - name: Comparer les versions
-        continue-on-error: true
+          export PROGRAM_VERSION_LATEST=$(cat current_version.txt)
+
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Configurer Git
         run: |
-          if ! diff current_version.txt <(echo ${{ secrets.PROGRAM_VERSION }}); then
-            echo "Une nouvelle version du programme est disponible."
-            export PROGRAM_VERSION=$(cat current_version.txt)
-            # Continuer le processus de mise à jour ici
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
 
-            # Créer un fichier temporaire pour stocker la valeur encodée en base64 de la nouvelle version
-            echo -n $PROGRAM_VERSION | base64 --wrap=0 > program_version_base64.txt
-
-            # Mettre à jour la variable secrète à l'aide de l'API GitHub
-            if [ -s program_version_base64.txt ]; then
-              curl -X PATCH -H "Authorization: Bearer ${{ secrets.PERSONAL_ACCESS_TOKEN }}" -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/aguyonp/docker-glpi-automated/actions/secrets/PROGRAM_VERSION -d '{"encrypted_value":"'"$(cat program_version_base64.txt)"'"}'
-              echo "La variable secrète PROGRAM_VERSION a été mise à jour."
-            else
-              echo "La valeur encodée en base64 de la nouvelle version est vide ou le fichier program_version_base64.txt n'existe pas."
-            fi
+      - name: Comparer et mettre à jour la version
+        run: |
+          export PROGRAM_VERSION=$(grep "PROGRAM_VERSION" .github/variables/repository-variables.env | sed -n 's/.*PROGRAM_VERSION=\([0-9.]*\).*/\1/p')
+          echo "PROGRAM_VERSION=$PROGRAM_VERSION"
+          echo "PROGRAM_VERSION_LATEST=$PROGRAM_VERSION_LATEST"
+          
+          if [ "$PROGRAM_VERSION" != "$PROGRAM_VERSION_LATEST" ]; then
+            sed -i "s/PROGRAM_VERSION=$PROGRAM_VERSION/PROGRAM_VERSION=$PROGRAM_VERSION_LATEST/" .github/variables/repository-variables.env
+            git add .github/variables/repository-variables.env
+            git commit -m "Mise à jour de la version de GLPI à $PROGRAM_VERSION_LATEST"
+            git push
           else
-            echo "Le programme est à jour."
-            exit 1 # Arrête la pipeline avec un code d'erreur
+            echo "La version de GLPI est déjà à jour"
+            exit 1
           fi
