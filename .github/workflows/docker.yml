@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+  workflow_dispatch:
 
 jobs:
   docker:
@@ -24,4 +25,4 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: {{ secrets.DOCKER_HUB_USERNAME }}/glpi:latest
+          tags: "{{ secrets.DOCKER_HUB_USERNAME }}/glpi:latest"
