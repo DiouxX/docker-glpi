@@ -24,4 +24,4 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: diouxx/glpi:latest
+          tags: {{ secrets.DOCKER_HUB_USERNAME }}/glpi:latest
