@@ -55,7 +55,7 @@ else
 fi
 
 #Add scheduled task by cron and enable
-echo "*/2 * * * * www-data /usr/bin/php /var/www/html/glpi/front/cron.php &>/dev/null" >> /etc/cron.d/glpi
+echo "*/2 * * * * www-data /usr/bin/php /var/www/html/glpi/front/cron.php &>/dev/null" > /etc/cron.d/glpi
 #Start cron service
 service cron start
 
