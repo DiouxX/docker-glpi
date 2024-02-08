@@ -6,12 +6,12 @@
 
 if [[ -z "${TIMEZONE}" ]]; then echo "TIMEZONE is unset"; 
 else 
-echo "date.timezone = \"$TIMEZONE\"" > /etc/php/8.1/apache2/conf.d/timezone.ini;
-echo "date.timezone = \"$TIMEZONE\"" > /etc/php/8.1/cli/conf.d/timezone.ini;
+echo "date.timezone = \"$TIMEZONE\"" > /etc/php/8.2/apache2/conf.d/timezone.ini;
+echo "date.timezone = \"$TIMEZONE\"" > /etc/php/8.2/cli/conf.d/timezone.ini;
 fi
 
 #Enable session.cookie_httponly
-sed -i 's,session.cookie_httponly =,session.cookie_httponly = on,g' /etc/php/8.1/apache2/php.ini
+sed -i 's,session.cookie_httponly =,session.cookie_httponly = on,g' /etc/php/8.2/apache2/php.ini
 
 FOLDER_GLPI=glpi/
 FOLDER_WEB=/var/www/html/
