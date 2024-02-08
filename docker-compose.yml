@@ -1,28 +1,55 @@
 version: "3.2"
 
 services:
-#MariaDB Container
-  mariadb:
-    image: mariadb:10.7
-    container_name: mariadb
-    hostname: mariadb
+# MariaDB Container
+  glpi_mariadb:
+    image: mariadb:latest
+    container_name: glpi_mariadb
+    hostname: glpi_mariadb
     volumes:
-      - /var/lib/mysql:/var/lib/mysql
-    env_file:
-      - ./mariadb.env
+      - ~/data/glpi/db:/var/lib/mysql
     restart: always
+    environment:
+      - MARIADB_ROOT_PASSWORD_FILE=/run/secrets/MARIADB_ROOT_PASSWORD
+      - MARIADB_USER_FILE=/run/secrets/MARIADB_USER
+      - MARIADB_PASSWORD_FILE=/run/secrets/MARIADB_PASSWORD
+      - MARIADB_DATABASE_FILE=/run/secrets/MARIADB_DATABASE
+    secrets:
+      - MARIADB_ROOT_PASSWORD
+      - MARIADB_USER
+      - MARIADB_PASSWORD
+      - MARIADB_DATABASE
 
-#GLPI Container
+# GLPI Container
   glpi:
-    image: diouxx/glpi
-    container_name : glpi
+    image: glpi
+    container_name: glpi
     hostname: glpi
-    ports:
-      - "80:80"
     volumes:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
-      - /var/www/html/glpi/:/var/www/html/glpi
+      - ~/data/glpi/www:/var/www/html/glpi
     environment:
       - TIMEZONE=Europe/Brussels
     restart: always
+    networks:
+      - traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.glpi-router.rule=Host(`glpi.MYDOMAIN.TLD`)"
+      - "traefik.http.services.glpi-service.loadbalancer.server.port=80"
+      - "traefik.docker.network=traefik"
+
+networks:
+  traefik:
+    external: true
+
+secrets:
+   MARIADB_ROOT_PASSWORD:
+      file: ~/secrets/glpi/MARIADB_ROOT_PASSWORD.txt
+   MARIADB_DATABASE:
+      file: ~/secrets/glpi/MARIADB_DATABASE.txt
+   MARIADB_USER:
+      file: ~/secrets/glpi/MARIADB_USER.txt
+   MARIADB_PASSWORD:
+      file: ~/secrets/glpi/MARIADB_PASSWORD.txt
