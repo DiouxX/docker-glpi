@@ -58,16 +58,15 @@ else
   echo -e "<VirtualHost *:80>\n\tDocumentRoot /var/www/html/glpi/public\n\n\t<Directory /var/www/html/glpi/public>\n\t\tRequire all granted\n\t\tRewriteEngine On\n\t\tRewriteCond %{REQUEST_FILENAME} !-f\n\t\n\t\tRewriteRule ^(.*)$ index.php [QSA,L]\n\t</Directory>\n\n\tErrorLog /var/log/apache2/error-glpi.log\n\tLogLevel warn\n\tCustomLog /var/log/apache2/access-glpi.log combined\n</VirtualHost>" > /etc/apache2/sites-available/000-default.conf
 fi
 
- {
-        echo "<?php"; \
-        echo "class DB extends DBmysql {"; \
-        echo "   public \$dbhost     = \"${MARIADB_HOST}\";"; \
-        echo "   public \$dbport     = \"${MARIADB_PORT}\";"; \
-        echo "   public \$dbuser     = \"${MARIADB_USER}\";"; \
-        echo "   public \$dbpassword = \"${MARIADB_PASSWORD}\";"; \
-        echo "   public \$dbdefault  = \"${MARIADB_DATABASE}\";"; \
-        echo "}"; \
-        echo ;
+{
+    echo "<?php"; \
+    echo "class DB extends DBmysql {"; \
+    echo "   public \$dbhost     = '${MARIADB_HOST}';"; \
+    echo "   public \$dbport     = '${MARIADB_PORT}';"; \
+    echo "   public \$dbuser     = '${MARIADB_USER}';"; \
+    echo "   public \$dbpassword = '${MARIADB_PASSWORD}';"; \
+    echo "   public \$dbdefault  = '${MARIADB_DATABASE}';"; \
+    echo "}"; \
 } > /var/www/html/glpi/config/config_db.php
 
 #Add scheduled task by cron and enable
