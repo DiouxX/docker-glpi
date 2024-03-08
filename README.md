@@ -1,6 +1,6 @@
-[# Project to deploy GLPI with docker
+# Project to deploy GLPI with docker
 
-![Docker Pulls](https://img.shields.io/docker/pulls/diouxx/glpi) ![Docker Stars](https://img.shields.io/docker/stars/diouxx/glpi) [![](https://images.microbadger.com/badges/image/diouxx/glpi.svg)](http://microbadger.com/images/diouxx/glpi "Get your own image badge on microbadger.com") ![Docker Cloud Automated build](https://img.shields.io/docker/cloud/automated/diouxx/glpi)
+![Docker Pulls](https://img.shields.io/docker/pulls/geniusdynamics/glpi) ![Docker Stars](https://img.shields.io/docker/stars/geniusdynamics/glpi) [![](https://images.microbadger.com/badges/image/geniusdynamics/glpi.svg)](http://microbadger.com/images/geniusdynamics/glpi "Get your own image badge on microbadger.com") ![Docker Cloud Automated build](https://img.shields.io/docker/cloud/automated/geniusdynamics/glpi)
 
 # Table of Contents
 - [Project to deploy GLPI with docker](#project-to-deploy-glpi-with-docker)
@@ -40,13 +40,13 @@ More info in the 📄[Docs](https://glpi-install.readthedocs.io/en/latest/instal
 
 ## Deploy GLPI 
 ```sh
-docker run --name mariadb -e MARIADB_ROOT_PASSWORD=diouxx -e MARIADB_DATABASE=glpidb -e MARIADB_USER=glpi_user -e MARIADB_PASSWORD=glpi -d mariadb:10.7
-docker run --name glpi --link mariadb:mariadb -p 80:80 -d diouxx/glpi
+docker run --name mariadb -e MARIADB_ROOT_PASSWORD=geniusdynamics -e MARIADB_DATABASE=glpidb -e MARIADB_USER=glpi_user -e MARIADB_PASSWORD=glpi -d mariadb:10.7
+docker run --name glpi --link mariadb:mariadb -p 80:80 -d geniusdynamics/glpi
 ```
 
 ## Deploy GLPI with existing database
 ```sh
-docker run --name glpi --link yourdatabase:mariadb -p 80:80 -d diouxx/glpi
+docker run --name glpi --link yourdatabase:mariadb -p 80:80 -d geniusdynamics/glpi
 ```
 
 ## Deploy GLPI with database and persistence data
@@ -56,13 +56,13 @@ For an usage on production environnement or daily usage, it's recommanded to use
 * First, create MariaDB container with volume
 
 ```sh
-docker run --name mariadb -e MARIADB_ROOT_PASSWORD=diouxx -e MARIADB_DATABASE=glpidb -e MARIADB_USER=glpi_user -e MARIADB_PASSWORD=glpi --volume /var/lib/mysql:/var/lib/mysql -d mariadb:10.7
+docker run --name mariadb -e MARIADB_ROOT_PASSWORD=geniusdynamics -e MARIADB_DATABASE=glpidb -e MARIADB_USER=glpi_user -e MARIADB_PASSWORD=glpi --volume /var/lib/mysql:/var/lib/mysql -d mariadb:10.7
 ```
 
 * Then, create GLPI container with volume and link MariaDB container
 
 ```sh
-docker run --name glpi --link mariadb:mariadb --volume /var/www/html/glpi:/var/www/html/glpi -p 80:80 -d diouxx/glpi
+docker run --name glpi --link mariadb:mariadb --volume /var/www/html/glpi:/var/www/html/glpi -p 80:80 -d geniusdynamics/glpi
 ```
 
 Enjoy :)
@@ -72,7 +72,7 @@ Default, docker run will use the latest release of GLPI.
 For an usage on production environnement, it's recommanded to set specific release.
 Here an example for release 9.1.6 :
 ```sh
-docker run --name glpi --hostname glpi --link mariadb:mariadb --volume /var/www/html/glpi:/var/www/html/glpi -p 80:80 --env "VERSION_GLPI=9.1.6" -d diouxx/glpi
+docker run --name glpi --hostname glpi --link mariadb:mariadb --volume /var/www/html/glpi:/var/www/html/glpi -p 80:80 --env "VERSION_GLPI=9.1.6" -d geniusdynamics/glpi
 ```
 
 # Deploy with docker-compose
@@ -95,7 +95,7 @@ services:
 
 #GLPI Container
   glpi:
-    image: diouxx/glpi
+    image: geniusdynamics/glpi
     container_name : glpi
     hostname: glpi
     ports:
@@ -121,7 +121,7 @@ services:
 
 #GLPI Container
   glpi:
-    image: diouxx/glpi
+    image: geniusdynamics/glpi
     container_name : glpi
     hostname: glpi
     environment:
@@ -143,7 +143,7 @@ You can modify **_mariadb.env_** to personalize settings like :
 
 ### mariadb.env
 ```
-MARIADB_ROOT_PASSWORD=diouxx
+MARIADB_ROOT_PASSWORD=geniusdynamics
 MARIADB_DATABASE=glpidb
 MARIADB_USER=glpi_user
 MARIADB_PASSWORD=glpi
@@ -167,7 +167,7 @@ services:
 
 #GLPI Container
   glpi:
-    image: diouxx/glpi
+    image: geniusdynamics/glpi
     container_name : glpi
     hostname: glpi
     ports:
@@ -194,7 +194,7 @@ If you need to set timezone for Apache and PHP
 
 From commande line
 ```sh
-docker run --name glpi --hostname glpi --link mariadb:mariadb --volumes-from glpi-data -p 80:80 --env "TIMEZONE=Europe/Brussels" -d diouxx/glpi
+docker run --name glpi --hostname glpi --link mariadb:mariadb --volumes-from glpi-data -p 80:80 --env "TIMEZONE=Europe/Brussels" -d geniusdynamics/glpi
 ```
 
 From docker-compose
@@ -204,4 +204,3 @@ Modify this settings
 environment:
      TIMEZONE=Europe/Brussels
 ```
-](https://hub.docker.com/repository/docker/geniusdynamics/glpi/general)https://hub.docker.com/repository/docker/geniusdynamics/glpi/general
