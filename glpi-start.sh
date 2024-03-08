@@ -1,5 +1,63 @@
 #!/bin/bash
 
+## Setup PHP
+ echo "Remove old PHP..."
+
+  yum -y remove \
+	php-cli \
+	mod_php \
+	php-common
+
+  echo "Install php73..."
+
+  yum -y install \
+	mod_php \
+	php-cli \
+	php-mysqlnd
+
+  yum -y install \
+	php-pear-CAS \
+	wget \
+	php-json \
+	php-mbstring \
+	php-mysqli \
+	php-session \
+	php-gd \
+	php-curl \
+	php-domxml \
+	php-imap \
+	php-ldap \
+	php-openssl \
+	php-opcache \
+	php-apcu \
+	php-xmlrpc \
+	php-intl \
+	php-zip \
+	php-sodium
+	php-ZendFramework-Cache-Backend-Apc \
+	jq \
+	openssl
+
+
+  # Setup PHP Ini
+echo "Setting 99-glpi.ini..."
+
+  cat <<EOF > /etc/php.d/99-glpi.ini
+memory_limit = 64M ;
+file_uploads = on ;
+max_execution_time = 600 ;
+register_globals = off ;
+magic_quotes_sybase = off ;
+session.auto_start = off ;
+session.use_trans_sid = 0 ;
+EOF
+
+  cat <<EOF > /etc/php.d/99-apcu.ini
+apc.enable_cli = 1 ;
+EOF
+
+
+
 #Controle du choix de version ou prise de la latest
 [[ ! "$VERSION_GLPI" ]] \
 	&& VERSION_GLPI=$(curl -s https://api.github.com/repos/glpi-project/glpi/releases/latest | grep tag_name | cut -d '"' -f 4)
