@@ -69,6 +69,13 @@ fi
     echo "}"; \
 } > /var/www/html/glpi/config/config_db.php
 
+/usr/bin/php /var/www/html/glpi/bin/console glpi:database:install \
+             	--no-interaction \
+             	--db-host=${MARIADB_DB_HOST} \
+             	--db-port=${MARIADB_DB_PORT} \
+             	--db-name=${MARIADB_DB_NAME} \
+             	--db-user=${MARIADB_DB_USER} \
+             	--db-password=${MARIADB_DB_PASSWORD}
 #Add scheduled task by cron and enable
 echo "*/2 * * * * www-data /usr/bin/php /var/www/html/glpi/front/cron.php &>/dev/null" > /etc/cron.d/glpi
 #Start cron service
