@@ -61,11 +61,11 @@ fi
 {
     echo "<?php"; \
     echo "class DB extends DBmysql {"; \
-    echo "   public \$dbhost     = '${MARIADB_HOST}';"; \
-    echo "   public \$dbport     = '${MARIADB_PORT}';"; \
-    echo "   public \$dbuser     = '${MARIADB_USER}';"; \
-    echo "   public \$dbpassword = '${MARIADB_PASSWORD}';"; \
-    echo "   public \$dbdefault  = '${MARIADB_DATABASE}';"; \
+    echo "   public \$dbhost     = '${MARIA_DB_HOST}';"; \
+    echo "   public \$dbport     = '${MARIA_DB_PORT}';"; \
+    echo "   public \$dbuser     = '${MARIA_DB_USER}';"; \
+    echo "   public \$dbpassword = '${MARIA_DB_PASSWORD}';"; \
+    echo "   public \$dbdefault  = '${MARIA_DB_NAME}';"; \
     echo "}"; \
 } > /var/www/html/glpi/config/config_db.php
 
