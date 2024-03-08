@@ -46,7 +46,7 @@ LOCAL_GLPI_MAJOR_VERSION=$(echo $LOCAL_GLPI_VERSION | cut -d. -f1)
 LOCAL_GLPI_VERSION_NUM=${LOCAL_GLPI_VERSION//./}
 
 ## Target value is GLPI 1.0.7
-TARGET_GLPI_VERSION="10.0.7"
+TARGET_GLPI_VERSION="10.0.12"
 TARGET_GLPI_VERSION_NUM=${TARGET_GLPI_VERSION//./}
 TARGET_GLPI_MAJOR_VERSION=$(echo $TARGET_GLPI_VERSION | cut -d. -f1)
 
@@ -57,6 +57,18 @@ else
   set +H
   echo -e "<VirtualHost *:80>\n\tDocumentRoot /var/www/html/glpi/public\n\n\t<Directory /var/www/html/glpi/public>\n\t\tRequire all granted\n\t\tRewriteEngine On\n\t\tRewriteCond %{REQUEST_FILENAME} !-f\n\t\n\t\tRewriteRule ^(.*)$ index.php [QSA,L]\n\t</Directory>\n\n\tErrorLog /var/log/apache2/error-glpi.log\n\tLogLevel warn\n\tCustomLog /var/log/apache2/access-glpi.log combined\n</VirtualHost>" > /etc/apache2/sites-available/000-default.conf
 fi
+
+ {
+        echo "<?php"; \
+        echo "class DB extends DBmysql {"; \
+        echo "   public \$dbhost     = \"${MARIADB_HOST}\";"; \
+        echo "   public \$dbport     = \"${MARIADB_PORT}\";"; \
+        echo "   public \$dbuser     = \"${MARIADB_USER}\";"; \
+        echo "   public \$dbpassword = \"${MARIADB_PASSWORD}\";"; \
+        echo "   public \$dbdefault  = \"${MARIADB_DATABASE}\";"; \
+        echo "}"; \
+        echo ;
+} > /var/www/html/glpi/config/config_db.php
 
 #Add scheduled task by cron and enable
 echo "*/2 * * * * www-data /usr/bin/php /var/www/html/glpi/front/cron.php &>/dev/null" > /etc/cron.d/glpi
