@@ -8,7 +8,7 @@
 	mod_php \
 	php-common
 
-  echo "Install php73..."
+  echo "Install ..."
 
   yum -y install \
 	mod_php \
@@ -116,19 +116,21 @@ else
   echo -e "<VirtualHost *:80>\n\tDocumentRoot /var/www/html/glpi/public\n\n\t<Directory /var/www/html/glpi/public>\n\t\tRequire all granted\n\t\tRewriteEngine On\n\t\tRewriteCond %{REQUEST_FILENAME} !-f\n\t\n\t\tRewriteRule ^(.*)$ index.php [QSA,L]\n\t</Directory>\n\n\tErrorLog /var/log/apache2/error-glpi.log\n\tLogLevel warn\n\tCustomLog /var/log/apache2/access-glpi.log combined\n</VirtualHost>" > /etc/apache2/sites-available/000-default.conf
 fi
 
-{
-    echo "<?php"; \
-    echo "class DB extends DBmysql {"; \
-    echo "   public \$dbhost     = '${MARIADB_DB_HOST}';"; \
-    echo "   public \$dbport     = '${MARIADB_DB_PORT}';"; \
-    echo "   public \$dbuser     = '${MARIADB_DB_USER}';"; \
-    echo "   public \$dbpassword = '${MARIADB_DB_PASSWORD}';"; \
-    echo "   public \$dbdefault  = '${MARIADB_DB_NAME}';"; \
-    echo "}"; \
-} > /var/www/html/glpi/config/config_db.php
+#{
+#    echo "<?php"; \
+#    echo "class DB extends DBmysql {"; \
+#    echo "   public \$dbhost     = '${MARIADB_DB_HOST}';"; \
+#    echo "   public \$dbport     = '${MARIADB_DB_PORT}';"; \
+#    echo "   public \$dbuser     = '${MARIADB_DB_USER}';"; \
+#    echo "   public \$dbpassword = '${MARIADB_DB_PASSWORD}';"; \
+#    echo "   public \$dbdefault  = '${MARIADB_DB_NAME}';"; \
+#    echo "}"; \
+#} > /var/www/html/glpi/config/config_db.php
 
 /usr/bin/php /var/www/html/glpi/bin/console glpi:database:install \
+              --reconfigure \
              	--no-interaction \
+             	--force \
              	--db-host=${MARIADB_DB_HOST} \
              	--db-port=${MARIADB_DB_PORT} \
              	--db-name=${MARIADB_DB_NAME} \
