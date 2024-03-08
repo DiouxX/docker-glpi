@@ -14,7 +14,7 @@ services:
 
 #GLPI Container
   glpi:
-    image: diouxx/glpi
+    image: geniusdynamics/glpi
     container_name : glpi
     hostname: glpi
     ports:
