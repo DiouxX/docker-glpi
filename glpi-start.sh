@@ -134,6 +134,10 @@ chmod -R u+rwx /var/www/html/glpi/
              	--db-name=${MARIADB_DB_NAME} \
              	--db-user=${MARIADB_DB_USER} \
              	--db-password=${MARIADB_DB_PASSWORD}
+
+# Enable time zones
+/usr/bin/php /var/www/html/glpi/bin/console migration:timestamps
+/usr/bin/php /var/www/html/glpi/bin/console database:enable_timezones
 #Add scheduled task by cron and enable
 echo "*/2 * * * * www-data /usr/bin/php /var/www/html/glpi/front/cron.php &>/dev/null" > /etc/cron.d/glpi
 #Start cron service
