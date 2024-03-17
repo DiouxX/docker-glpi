@@ -1,12 +1,12 @@
-# On choisit une debian
+# Choose a debian
 FROM debian:12.0
 
 LABEL org.opencontainers.image.authors="github@genius.ke"
 
-# Ne pas poser de question à l'installation
+# Do not ask questions during installation
 ENV DEBIAN_FRONTEND noninteractive
 
-# Installation d'apache et de php8.1 avec extension
+# Install apache and php8.1 with extensions
 RUN apt update \
 && apt install --yes ca-certificates apt-transport-https lsb-release wget curl \
 && curl -sSLo /usr/share/keyrings/deb.sury.org-php.gpg https://packages.sury.org/php/apt.gpg \
@@ -37,10 +37,10 @@ libsasl2-modules \
 libsasl2-modules-db \
 && rm -rf /var/lib/apt/lists/*
 
-# Copie et execution du script pour l'installation et l'initialisation de GLPI
+# Copy and execute the script for GLPI installation and initialization
 RUN LOGS="install_glpi.log" \
 && echo "====================================================" >> $LOGS \
-&& echo "## VARIAVEIS" >> $LOGS \
+&& echo "## VARIABLES" >> $LOGS \
 && echo "====================================================" >> $LOGS \
 && echo "Remove old PHP..." \
 && yum -y remove \
@@ -116,5 +116,5 @@ RUN LOGS="install_glpi.log" \
 && pkill -9 apache \
 && /usr/sbin/apache2ctl -D FOREGROUND
 
-# Exposition des ports
+# Expose ports
 EXPOSE 80 443
