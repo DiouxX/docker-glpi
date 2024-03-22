@@ -1,15 +1,16 @@
-version: "3"
+version: "3.2"
 
 services:
-#Mysql Container
-  mysql:
-    image: mysql:5.7.23
-    container_name: mysql
-    hostname: mysql
+#MariaDB Container
+  mariadb:
+    image: mariadb:10.7
+    container_name: mariadb
+    hostname: mariadb
     volumes:
       - /var/lib/mysql:/var/lib/mysql
     env_file:
-      - ./mysql.env
+      - ./mariadb.env
+    restart: always
 
 #GLPI Container
   glpi:
@@ -18,8 +19,6 @@ services:
     hostname: glpi
     ports:
       - "80:80"
-    links:
-      - mysql:mysql
     volumes:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
