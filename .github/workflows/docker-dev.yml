@@ -1,0 +1,23 @@
+name: Build & Publish Dev Docker image
+
+on:
+  push:
+    branches: 
+      - "dev"
+  workflow_dispatch:
+  
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+          
+      - name: Build and push
+        uses: docker/build-push-action@v5.3.0
+        with:
+          push: true
+          tags: diouxx/glpi:dev
