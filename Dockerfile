@@ -7,7 +7,7 @@ LABEL org.opencontainers.image.authors="github@diouxx.be"
 #Ne pas poser de question à l'installation
 ENV DEBIAN_FRONTEND noninteractive
 
-#Installation d'apache et de php8.3 avec extension
+#Installation d'apache et de php7.4 avec extension
 RUN apt update \
 && apt install --yes ca-certificates apt-transport-https lsb-release wget curl \
 && curl -sSLo /usr/share/keyrings/deb.sury.org-php.gpg https://packages.sury.org/php/apt.gpg \ 
@@ -15,20 +15,20 @@ RUN apt update \
 && apt update \
 && apt install --yes --no-install-recommends \
 apache2 \
-php8.3 \
-php8.3-mysql \
-php8.3-ldap \
-php8.3-xmlrpc \
-php8.3-imap \
-php8.3-curl \
-php8.3-gd \
-php8.3-mbstring \
-php8.3-xml \
+php7.4 \
+php7.4-mysql \
+php7.4-ldap \
+php7.4-xmlrpc \
+php7.4-imap \
+php7.4-curl \
+php7.4-gd \
+php7.4-mbstring \
+php7.4-xml \
 php-cas \
-php8.3-intl \
-php8.3-zip \
-php8.3-bz2 \
-php8.3-redis \
+php7.4-intl \
+php7.4-zip \
+php7.4-bz2 \
+php7.4-redis \
 cron \
 jq \
 libldap-2.5-0 \
