@@ -1,4 +1,4 @@
-ame: Build & Publish Docker Image PHP 7.4
+name: Build & Publish Docker Image PHP 7.4
 
 on:
   push:
