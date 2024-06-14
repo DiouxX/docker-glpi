@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - php7.4
+  workflow_dispatch:
 
 jobs:
   docker:
