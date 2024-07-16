@@ -25,4 +25,10 @@ services:
       - /var/www/html/glpi/:/var/www/html/glpi
     environment:
       - TIMEZONE=Europe/Brussels
+      - DB_HOST=mariadb
+      - DB_NAME=glpidb
+      - DB_USER=glpi_user
+      - DB_PASS=glpi
+      - REMOVE_INSTALL=true
+      - ENCRYPT_KEY=APpq+sK+bdSfoFEhQp4RMYzv/r5h/wiHBQ68gja4w/Y=
     restart: always
