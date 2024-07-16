@@ -4,8 +4,8 @@
 [[ ! "$VERSION_GLPI" ]] \
 	&& VERSION_GLPI=$(curl -s https://api.github.com/repos/glpi-project/glpi/releases/latest | grep tag_name | cut -d '"' -f 4)
 
-if [[ -z "${TIMEZONE}" ]]; then echo "TIMEZONE is unset"; 
-else 
+if [[ -z "${TIMEZONE}" ]]; then echo "TIMEZONE is unset";
+else
 echo "date.timezone = \"$TIMEZONE\"" > /etc/php/8.3/apache2/conf.d/timezone.ini;
 echo "date.timezone = \"$TIMEZONE\"" > /etc/php/8.3/cli/conf.d/timezone.ini;
 fi
@@ -35,6 +35,44 @@ else
 	tar -xzf ${FOLDER_WEB}${TAR_GLPI} -C ${FOLDER_WEB}
 	rm -Rf ${FOLDER_WEB}${TAR_GLPI}
 	chown -R www-data:www-data ${FOLDER_WEB}${FOLDER_GLPI}
+fi
+
+# If DB_HOST is not empty, then update the config_db.php file
+if [ -n "${DB_HOST}" ]; then
+    cat <<EOF > /var/www/html/glpi/config/config_db.php
+<?php
+class DB extends DBmysql {
+   public \$dbhost = '${DB_HOST}';
+   public \$dbuser = '${DB_USER}';
+   public \$dbpassword = '${DB_PASS}';
+   public \$dbdefault = '${DB_NAME}';
+   public \$use_utf8mb4 = true;
+   public \$allow_myisam = false;
+   public \$allow_datetime = false;
+   public \$allow_signed_keys = false;
+}
+EOF
+    echo "File config_db.php updated!"
+fi
+
+## Verify if exist ENCRYPTION_KEY OR GENERATE ONE
+if [ -z "${ENCRYPTED_KEY}" ]; then
+  # Generate new key using sodium_crypto_aead_chacha20poly1305_ietf_keygen
+  GENERATED_KEY=$(php -r 'echo sodium_bin2base64(sodium_crypto_aead_chacha20poly1305_ietf_keygen(), SODIUM_BASE64_VARIANT_ORIGINAL);')
+  echo "${GENERATED_KEY}" | base64 --decode > /var/www/html/glpi/config/glpicrypt.key
+  echo "Key generated ${GENERATED_KEY}"
+  echo "Key saved in /var/www/html/glpi/config/glpicrypt.key:"
+else
+  #Decode the key and save it in the file
+  DECODED_KEY=$(echo "${ENCRYPTED_KEY}" | base64 --decode)
+  echo "${DECODED_KEY}" > /var/www/html/glpi/config/glpicrypt.key
+  echo "glpicrypt.key updated"
+fi
+
+if [ "${REMOVE_INSTALL}" = "true" ]; then
+    # Remove install folder
+    rm -rf /var/www/html/glpi/install/
+    echo "Folder INSTALL removed."
 fi
 
 #Adapt the Apache server according to the version of GLPI installed
