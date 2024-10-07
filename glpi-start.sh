@@ -68,5 +68,7 @@ a2enmod rewrite && service apache2 restart && service apache2 stop
 #Fix to really stop apache
 pkill -9 apache
 
+rm /var/www/html/glpi/install/install.php
+
 #Lancement du service apache au premier plan
 /usr/sbin/apache2ctl -D FOREGROUND
