@@ -10,11 +10,11 @@ services:
       - /var/lib/mysql:/var/lib/mysql
     env_file:
       - ./mariadb.env
-    restart: always
+    restart: no
 
 #GLPI Container
   glpi:
-    image: diouxx/glpi
+    image: harbor.beantech.cloud/devsecops/glpi:php8.3
     container_name : glpi
     hostname: glpi
     ports:
@@ -24,5 +24,6 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /var/www/html/glpi/:/var/www/html/glpi
     environment:
-      - TIMEZONE=Europe/Brussels
-    restart: always
+      - TIMEZONE=Europe/Rome
+      - VERSION_GLPI=10.0.16
+    restart: no
