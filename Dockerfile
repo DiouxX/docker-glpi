@@ -17,6 +17,7 @@ RUN apt update \
 apache2 \
 php8.3 \
 php8.3-mysql \
+php8.3-bcmath \
 php8.3-ldap \
 php8.3-xmlrpc \
 php8.3-imap \
